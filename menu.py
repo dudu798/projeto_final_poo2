@@ -8,20 +8,21 @@ class Menu:
         self.lista_consultas = []
         self.lista_crm = []
         self.lista_cpf = []
+
         self.especializacoes_medicas = {'Ortopedia': [],'Pediatria': [],'Cardiologia': [],'Clinica': [],'Dermatologia': [],'Endocrinologia': []}
-        pac1 = Paciente('Tadeu Toddy', 33, '97179468096' , 'lesao muscular na panturrilha' , 'S')
+        pac1 = Paciente('Tadeu Toddy', 33, '97179468096' , 'S')
         self.lista_pacientes.append(pac1)
 
-        pac2 = Paciente('Maria Silva', 45, '96858658092', 'febre e dor de cabeça', 'N')
+        pac2 = Paciente('Maria Silva', 45, '96858658092', 'N')
         self.lista_pacientes.append(pac2)
 
-        pac3 = Paciente('João Oliveira', 28, '00566716011', 'tosse persistente', 'S')
+        pac3 = Paciente('João Oliveira', 28, '00566716011', 'S')
         self.lista_pacientes.append(pac3)
 
-        pac4 = Paciente('Ana Souza', 50, '39940129025', 'dores abdominais', 'N')
+        pac4 = Paciente('Ana Souza', 50, '39940129025', 'N')
         self.lista_pacientes.append(pac4)
 
-        pac5 = Paciente('Carlos Rocha', 62, '10491895070', 'fadiga e falta de ar', 'S')
+        pac5 = Paciente('Carlos Rocha', 62, '10491895070', 'S')
         self.lista_pacientes.append(pac5)
 
         med1 = Medico('Afonso Dino', 55, 204918951, 'Ortopedia')
@@ -128,46 +129,18 @@ class Menu:
             x = input('Digite a CRM: ')
         return x
     
-    def cadastrar_paciente(self):
-        nome = input('Nome do paciente: ').title()
-        cpf = input('CPF do paciente: ')
-        cpf = self.verifica_cpf(cpf)
-        cpf = self.verifica_unicidade_cpf(cpf)
-        self.lista_cpf.append(cpf)
-        
-        idade = int(input('Idade do paciente: '))
-        sintomas = input('Sintomas que o paciente apresenta: ')
-        convenio = input('Paciente possui plano de saúde? [S/N]: ').upper()
-        convenio = self.verifica_convenio(convenio)
-        paciente = Paciente(nome,idade,cpf,sintomas,convenio)
+    def cadastrar_paciente(self, nome, idade, cpf, convenio):
+        paciente = Paciente(nome,idade,cpf,convenio)
         self.lista_pacientes.append(paciente)
-        print("Paciente cadastrado com sucesso!")
-        print(paciente.descricao())
-        print(' ')
+        self.lista_cpf.append(cpf)
+        return paciente
     
-    def cadastrar_medico(self):
-        nome = input('Nome do médico: ').title()
-        idade = int(input('Idade do médico: '))
-        crm = input('CRM do médico (9 dígitos numéricos): ')
-        crm = self.verifica_crm(crm)
+    def cadastrar_medico(self, nome, idade, crm, especializacao):
         self.lista_crm.append(crm)
-        print('''
-    Especializações disponíveis:
-        -Ortopedia
-        -Pediatria
-        -Cardiologia
-        -Clinica
-        -Dermatologia
-        -Endocrinologia
-        ''')
-        especializacao = input('Qual especialização: ').title()
         especializacao = self.adicionar_medico(nome,especializacao)
-        medico=Medico(nome,idade,crm,especializacao)
+        medico = Medico(nome,idade,crm,especializacao)
         self.lista_medicos.append(medico)
-        print("Médico cadastrado com sucesso!")
-        print(medico.descricao())
-        print(f'Valor da consulta R$: 300.00')
-        print(' ')
+        return medico
 
     def adicionar_medico(self, x, y):
         if y in self.especializacoes_medicas:
@@ -364,50 +337,11 @@ class Menu:
 
         return faturamento_total
     
-    def menu(self):
-        while True:
-            print('''------------------------------------------------------------------------------------
-1- Cadastrar um paciente
-2- Cadastrar um médico
-3- Atualizar informações de algum paciente já cadastrado
-4- Atualizar informações de algum médico já cadastrado
-5- Agendar uma consulta
-6- Verificar consultas agendadas
-7- Remarcar consultas
-8- Cancelar consultas
-9- Mostrar faturamento do dia (fim da execução)
-------------------------------------------------------------------------------------''')
-            
-            operacao = int(input("Qual operação deseja fazer?: "))
-            operacao = self.verifica_operacao(operacao, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-            
-        
-            if operacao == 1:
-                self.cadastrar_paciente()
-
-            if operacao == 2:
-                self.cadastrar_medico()
-
-            if operacao == 3:
-                self.atualiza_paciente()
-                
-            if operacao == 4:
-                self.atualiza_medico()
-
-            if operacao == 5:
-                self.agendar_consulta()
-
-            if operacao == 6:
-                nome_verifica_consulta = input("Digite o nome paciente para verificar as consultas: ").title()
-                self.verificar_consulta(nome_verifica_consulta)
-                
-            if operacao == 7:
-                self.editar_consulta()
-                
-            if operacao == 8:
-                self.remover_consulta()
-                
-            if operacao == 9:
-                faturamento_total = self.calcular_faturamento()
-                print(f"Faturamento Total diário do Hospital: R${faturamento_total}")
-                break
+    def mostrar_opcoes(self):
+        return ["1- Cadastrar um paciente", "2- Cadastrar um médico",
+                "3- Atualizar informações de algum paciente já cadastrado",
+                "4- Atualizar informações de algum médico já cadastrado",
+                "5- Agendar uma consulta", "6- Verificar consultas agendadas",
+                "7- Remarcar consultas", "8- Cancelar consultas",
+                "9- Mostrar faturamento do dia (fim da execução)"]
+    
