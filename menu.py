@@ -10,137 +10,123 @@ class Menu:
         self.lista_cpf = []
 
         self.especializacoes_medicas = {'Ortopedia': [],'Pediatria': [],'Cardiologia': [],'Clinica': [],'Dermatologia': [],'Endocrinologia': []}
-        pac1 = Paciente('Tadeu Toddy', 33, '97179468096' , 'S')
+        pac1 = Paciente('Tadeu Toddy', "12345", '97179468096')
         self.lista_pacientes.append(pac1)
 
-        pac2 = Paciente('Maria Silva', 45, '96858658092', 'N')
+        pac2 = Paciente('Maria Silva', "12345", '96858658092')
         self.lista_pacientes.append(pac2)
 
-        pac3 = Paciente('João Oliveira', 28, '00566716011', 'S')
+        pac3 = Paciente('João Oliveira', "12345", '00566716011')
         self.lista_pacientes.append(pac3)
 
-        pac4 = Paciente('Ana Souza', 50, '39940129025', 'N')
+        pac4 = Paciente('Ana Souza', "12345", '39940129025')
         self.lista_pacientes.append(pac4)
 
-        pac5 = Paciente('Carlos Rocha', 62, '10491895070', 'S')
+        pac5 = Paciente('Carlos Rocha', "12345", '10491895070')
         self.lista_pacientes.append(pac5)
 
-        med1 = Medico('Afonso Dino', 55, 204918951, 'Ortopedia')
+        med1 = Medico('Afonso Dino', "12345", 204918951, 'Ortopedia')
         self.adicionar_medico('Afonso Dino', 'Ortopedia')
         self.lista_medicos.append(med1)
 
-        med2 = Medico('Beatriz Lima', 40, 987654321, 'Pediatria')
+        med2 = Medico('Beatriz Lima', "12345", 987654321, 'Pediatria')
         self.adicionar_medico('Beatriz Lima', 'Pediatria')
         self.lista_medicos.append(med2)
 
-        med3 = Medico('Ricardo Santos', 48, 123456789, 'Cardiologia')
+        med3 = Medico('Ricardo Santos', "12345", 123456789, 'Cardiologia')
         self.adicionar_medico('Ricardo Santos', 'Cardiologia')
         self.lista_medicos.append(med3)
 
-        med4 = Medico('Isabel Oliveira', 35, 876543210, 'Dermatologia')
+        med4 = Medico('Isabel Oliveira', "12345", 876543210, 'Dermatologia')
         self.adicionar_medico('Isabel Oliveira', 'Dermatologia')
         self.lista_medicos.append(med4)
 
-        med5 = Medico('Luciano Silva', 42, 543216789, 'Clinica')
+        med5 = Medico('Luciano Silva', "12345", 543216789, 'Clinica')
         self.adicionar_medico('Luciano Silva', 'Clinica')
         self.lista_medicos.append(med5)
 
-        med6 = Medico('Tatiane Costa', 50, 321654987, 'Endocrinologia')
+        med6 = Medico('Tatiane Costa', "12345", 321654987, 'Endocrinologia')
         self.adicionar_medico('Tatiane Costa', 'Endocrinologia')
         self.lista_medicos.append(med6)
 
-        med7 = Medico('Felipe Martins', 38, 987123456, 'Ortopedia')
+        med7 = Medico('Felipe Martins', "12345", 987123456, 'Ortopedia')
         self.adicionar_medico('Felipe Martins', 'Ortopedia')
         self.lista_medicos.append(med7)
 
-        med8 = Medico('Larissa Oliveira', 32, 654789321, 'Pediatria')
+        med8 = Medico('Larissa Oliveira', "12345", 654789321, 'Pediatria')
         self.adicionar_medico('Larissa Oliveira', 'Pediatria')
         self.lista_medicos.append(med8)
 
-        med9 = Medico('Pedro Santos', 45, 789456123, 'Cardiologia')
+        med9 = Medico('Pedro Santos', "12345", 789456123, 'Cardiologia')
         self.adicionar_medico('Pedro Santos', 'Cardiologia')
         self.lista_medicos.append(med9)
 
-        med10 = Medico('Mariana Costa', 55, 321789654, 'Dermatologia')
+        med10 = Medico('Mariana Costa', "12345", 321789654, 'Dermatologia')
         self.adicionar_medico('Mariana Costa', 'Dermatologia')
         self.lista_medicos.append(med10)
 
-        med11 = Medico('Rafaela Lima', 42, 159753468, 'Endocrinologia')
+        med11 = Medico('Rafaela Lima', "12345", 159753468, 'Endocrinologia')
         self.adicionar_medico('Rafaela Lima', 'Endocrinologia')
         self.lista_medicos.append(med11)
-    
-
-    def verifica_operacao(self,x,a,b,c,d,e,f,g,h,i):
-        while x not in [a,b,c,d,e,f,g,h,i]:
-            x = int(input('Operação inválida, digite novamente: '))
-        return x
-
-    def verifica_convenio(self, x):
-        while x not in ['S','N']:
-            x = input('Digite S se tiver plano ou N se não tiver: ').upper()
-        return x
 
     def verifica_cpf(self, cpf):
-        while True:
-            cpf = ''.join(filter(str.isdigit, cpf))
-
-            if len(cpf) != 11:
-                print("CPF inválido. Por favor, digite novamente.")
-                cpf = input("Digite o CPF: ")
-                cpf = self.verifica_unicidade_cpf(cpf)
-                continue
-            
-            soma = 0
-            for i in range(9):
-                soma += int(cpf[i]) * (10 - i)
-            resto = soma % 11
-            digito_verificador1 = 0 if resto < 2 else 11 - resto
-
-            if digito_verificador1 != int(cpf[9]):
-                print("CPF inválido. Por favor, digite novamente.")
-                cpf = input("Digite o CPF: ")
-                cpf = self.verifica_unicidade_cpf(cpf)
-                continue
-
-            soma = 0
-            for i in range(10):
-                soma += int(cpf[i]) * (11 - i)
-            resto = soma % 11
-            digito_verificador2 = 0 if resto < 2 else 11 - resto
-
-            if digito_verificador2 != int(cpf[10]):
-                print("CPF inválido. Por favor, digite novamente.")
-                cpf = input("Digite o CPF: ")
-                cpf = self.verifica_unicidade_cpf(cpf)
-                continue
-            break
-        return cpf
-
-    def verifica_unicidade_cpf(self, x):
-        while x in self.lista_cpf:
-            print('CPF já em uso. Por favor, digite novamente.')
-            x = input('Digite o CPF: ')
-            x = self.verifica_cpf(x)
-        return x
-
-    def verifica_crm(self, x):
-        while (len(x) != 9) or (x in self.lista_crm):
-            print('CRM inválida ou já em uso. Por favor, digite novamente.')
-            x = input('Digite a CRM: ')
-        return x
+        cpf = ''.join(filter(str.isdigit, cpf))
+        if len(cpf) != 11:
+            return False
+        soma = 0
+        for i in range(9):
+            soma += int(cpf[i]) * (10 - i)
+        resto = soma % 11
+        digito_verificador1 = 0 if resto < 2 else 11 - resto
+        if digito_verificador1 != int(cpf[9]):
+            return False
+        soma = 0
+        for i in range(10):
+            soma += int(cpf[i]) * (11 - i)
+        resto = soma % 11
+        digito_verificador2 = 0 if resto < 2 else 11 - resto
+        if digito_verificador2 != int(cpf[10]):
+            return False
+        return True
     
-    def cadastrar_paciente(self, nome, idade, cpf, convenio):
-        paciente = Paciente(nome,idade,cpf,convenio)
+    def cadastrar_paciente(self, nome, senha, cpf):
+        paciente = Paciente(nome, senha, cpf)
         self.lista_pacientes.append(paciente)
         self.lista_cpf.append(cpf)
         return paciente
     
-    def cadastrar_medico(self, nome, idade, crm, especializacao):
+    def cadastrar_medico(self, nome, senha, crm, especializacao):
         self.lista_crm.append(crm)
         especializacao = self.adicionar_medico(nome,especializacao)
-        medico = Medico(nome,idade,crm,especializacao)
+        medico = Medico(nome,senha,crm,especializacao)
         self.lista_medicos.append(medico)
         return medico
+    
+    def atualizar_paciente(self, cpf_atualizar, valor_mudanca, novo_valor):
+        for paciente in self.lista_pacientes:
+            if paciente.cpf == cpf_atualizar:
+                if valor_mudanca == "Nome":
+                    paciente.nome = novo_valor
+                elif valor_mudanca == "CPF":
+                    paciente.cpf = novo_valor
+                elif valor_mudanca == "Idade":
+                    paciente.idade = novo_valor
+                elif valor_mudanca == "Convenio":
+                    paciente.convenio = novo_valor
+                return paciente
+        return None
+    
+    def atualizar_medico(self, crm_atualizar, valor_mudanca, novo_valor):
+        for medico in self.lista_medicos:
+            if medico.crm == crm_atualizar:
+                if valor_mudanca == "Nome":
+                    medico.nome = novo_valor
+                elif valor_mudanca == "CRM":
+                    medico.crm = novo_valor
+                elif valor_mudanca == "Idade":
+                    medico.idade = novo_valor
+                return medico
+        return None
 
     def adicionar_medico(self, x, y):
         if y in self.especializacoes_medicas:
@@ -159,63 +145,6 @@ class Menu:
             ''')
             y = input('Digite uma especialização que o hospital trabalhe: ').title()
         return y
-    
-    def atualiza_paciente(self):
-        cpf = input("Digite o CPF do paciente: ")
-        paciente = next((p for p in self.lista_pacientes if p.cpf == cpf), None)
-        if paciente:
-            print('''
-    1- Nome do paciente
-    2- Idade do paciente
-    3- CPF do paciente
-    4- Sintoma do paciente
-    5- Convenio do paciente
-    ''')
-            dado = int(input('Qual dado deseja alterar?: '))
-            dado = self.verifica_operacao(dado, 1, 2, 3, 4, 5, 1, 1, 1, 1)
-            if dado == 1:
-                paciente.set_nome(input("Digite o novo nome do paciente: ").title())
-            if dado == 2:
-                paciente.set_idade(int(input("Digite a nova idade do paciente: ")))
-            if dado == 3:
-                alt_cpf = input("Digite o novo CPF do paciente: ")
-                alt_cpf = self.verifica_cpf(alt_cpf)
-                alt_cpf = self.verifica_unicidade_cpf(alt_cpf)
-                paciente.set_cpf(alt_cpf)
-            if dado == 4:
-                paciente.set_sintomas(input("Digite todos os novos e antigos sintomas do paciente: "))
-            if dado == 5:
-                alt_con = paciente.set_convenio(input("Paciente possui plano de saúde? [S/N]: ").upper())
-                alt_con = self.verifica_convenio(alt_con)
-                paciente.set_convenio(alt_con)
-            print('Dados do paciente foram alterados com sucesso!') 
-            print(paciente.descricao())
-            print(' ')
-        else:
-            print("Paciente não encontrado!")
-            print(' ')
-    
-    def atualiza_medico(self):
-        crm = input("Digite o CRM do médico: ") 
-        medico = next((m for m in self.lista_medicos if m.crm == crm), None)
-        if medico:
-            print('''
-    1- Nome do médico
-    2- Idade do médico
-    ''')
-            dado = int(input('Qual dado deseja alterar?: '))
-            dado = self.verifica_operacao(dado, 1, 2, 1, 1, 1, 1, 1, 1, 1)
-            if dado == 1:
-                medico.set_nome(input("Digite o novo nome do médico: ").title())
-            if dado == 2:
-                medico.set_idade(int(input("Digite a nova idade do médico: ")))
-
-            print('Dados do médico foram alterados com sucesso!') 
-            print(medico.descricao())
-            print(f'Valor da consulta R$: 300.00')
-            print(' ')
-        else:
-            print("Médico não encontrado!")
         
     def agendar_consulta(self):
         cpf_paciente = input("Digite o CPF do paciente que deseja marcar uma consulta: ")
@@ -343,5 +272,5 @@ class Menu:
                 "4- Atualizar informações de algum médico já cadastrado",
                 "5- Agendar uma consulta", "6- Verificar consultas agendadas",
                 "7- Remarcar consultas", "8- Cancelar consultas",
-                "9- Mostrar faturamento do dia (fim da execução)"]
+                "9- Mostrar faturamento do dia (fim da execução)", "10- Ver pacientes cadastrados"]
     
