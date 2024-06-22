@@ -1,8 +1,8 @@
 from pessoa import Pessoa
 
 class Medico(Pessoa):
-    def __init__(self, nome, idade, crm, especializacao):
-        super().__init__(nome, idade)
+    def __init__(self, nome, senha, crm, especializacao):
+        super().__init__(nome, senha)
         self.crm = crm
         self.especializacao = especializacao
 
