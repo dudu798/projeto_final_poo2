@@ -1,19 +1,14 @@
+import hashlib
+
 class Pessoa:
-    def __init__(self ,nome, idade):
+    def __init__(self ,nome, senha):
         self.nome = nome
-        self.idade = idade
+        self.senha_codificada = self.codifica_senha(senha)
 
-    def get_nome(self):
-        return self.nome
-    
-    def set_nome(self, nome):
-        self.nome = nome
-
-    def get_idade(self):
-        return self.idade
-    
-    def set_idade(self, idade):
-        self.idade = idade
+    def codifica_senha(self, senha):
+        h = hashlib.sha256()   # Algoritmo de encodificação SHA256
+        h.update(senha.encode())    # Torna senha fornecida em bytes
+        return h.hexdigest() # Converte byter em uma string hexadecimal
         
     def descricao(self):
-        return f"Nome: {self.nome}, Idade: {self.idade}"
+        return f"Nome: {self.nome}, Senha: {self.senha_codificada}"
