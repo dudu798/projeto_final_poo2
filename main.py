@@ -1,6 +1,7 @@
 from interfaceGrafica import *
 
-janela_principal = tk.Tk()
-app = App(janela_principal)
+master = tk.Tk()
+master.geometry("400x500")
+app = App(master)
 app.criar_tela_menu()
-janela_principal.mainloop()
+master.mainloop()
