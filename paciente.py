@@ -7,9 +7,12 @@ class Paciente(Pessoa):
     
     def get_cpf(self):
         return self.cpf
+
+    def get_nome(self):
+        return self.nome
     
     def set_cpf(self, cpf):
         self.cpf = cpf
         
     def descricao(self):
-        return f"{super().descricao()}, CPF: {self.cpf}, "
+        return {'nome': self.nome, 'senha': self.senha_codificada, 'cpf': self.cpf}
