@@ -9,6 +9,3 @@ class Pessoa:
         h = hashlib.sha256()   # Algoritmo de encodificação SHA256
         h.update(senha.encode())    # Torna senha fornecida em bytes
         return h.hexdigest() # Converte byter em uma string hexadecimal
-        
-    def descricao(self):
-        return f"Nome: {self.nome}, Senha: {self.senha_codificada}"
