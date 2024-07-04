@@ -44,7 +44,7 @@ class App():
         if opcao == "8- Cancelar consultas":
             self.cancelar_consulta()
         
-        if opcao == "9- Ver pacientes cadastrados":
+        elif opcao == "9- Ver contas cadastradas":
             self.ver_todas_contas() 
 
     def limpar_tela(self):
@@ -393,7 +393,8 @@ class App():
             messagebox.showerror("Erro", "Não foi possível cancelar a consulta. Verifique os dados e tente novamente.")
 
     def ver_todas_contas(self):
-            lista_pacientes = '\n'.join([f"Nome: {p.nome}, Senha codificada: {p.senha_codificada}, CPF: {p.cpf}" for p in self.menu.lista_pacientes])
-            messagebox.showinfo("Contas de pacientes", lista_pacientes)
-            lista_medicos = '\n'.join([f"Nome: {m.nome}, Senha codificada: {m.senha_codificada}, CRM: {m.crm}" for m in self.menu.lista_medicos])
-            messagebox.showinfo("Contas de médicos", lista_medicos)
+        lista_pacientes = '\n'.join([f"Nome: {p.nome}, Senha codificada: {p.senha_codificada}, CPF: {p.cpf}" for p in self.menu.lista_pacientes])
+        messagebox.showinfo("Contas de pacientes", lista_pacientes)
+        lista_medicos = '\n'.join([f"Nome: {m.nome}, Senha codificada: {m.senha_codificada}, CRM: {m.crm}" for m in self.menu.lista_medicos])
+        messagebox.showinfo("Contas de médicos", lista_medicos)
+
