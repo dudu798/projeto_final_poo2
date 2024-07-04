@@ -28,21 +28,35 @@ class Menu:
         try:
             with open('dados_medicos.json', 'r') as file:
                 dados = json.load(file)
-                self.lista_medicos = [Medico(**dados_medico) for dados_medico in dados['medicos']]
-                self.lista_crm = dados.get('crms', [])
+                if 'medicos' in dados:  # Verifica se há dados de médicos no arquivo
+                    self.lista_medicos = [Medico(**dados_medico) for dados_medico in dados['medicos']]
+                    self.lista_crm = dados.get('crms', [])
+    
         except FileNotFoundError:
             self.lista_medicos = []
             self.lista_crm = []
+            
+        try:
+            with open('dados_consultas.json', 'r') as file:
+                dados = json.load(file)
+                self.lista_consultas = [Consulta(**dados_consulta) for dados_consulta in dados['consultas']]
+            
+        except FileNotFoundError:
+            self.lista_consultas = []
 
     def salvar_dados(self):
         dados_paciente = [paciente.descricao() for paciente in self.lista_pacientes]
         dados_medico = [medico.descricao() for medico in self.lista_medicos]
+        dados_consulta = [consulta.descricao() for consulta in self.lista_consultas]
 
         with open('dados_pacientes.json', 'w') as file:
             json.dump({'pacientes': dados_paciente, 'cpfs': self.lista_cpf}, file, indent=4)
         
         with open('dados_medicos.json', 'w') as file:
             json.dump({'medicos': dados_medico, 'crms': self.lista_crm}, file, indent=4)
+            
+        with open('dados_consultas.json', 'w') as file:
+            json.dump({'consultas': dados_consulta}, file, indent=4)
 
     def mostrar_opcoes(self):
         return ["1- Cadastrar um paciente", "2- Cadastrar um médico",
@@ -106,49 +120,47 @@ class Menu:
         return y
         
     def agendar_consulta_interface(self, cpf_paciente, especializacao, nome_medico, horario_desejado):
+        self.carregar_dados()
         for paciente in self.lista_pacientes:
             if cpf_paciente == paciente.get_cpf():
-                if especializacao in self.especializacoes_medicas:
-                    for medico in self.especializacoes_medicas[especializacao]:
-                        if medico['nome'] == nome_medico and horario_desejado in medico['horarios']:
-                            medico['horarios'].remove(horario_desejado)
-                            consulta = Consulta(len(self.lista_consultas) + 1, paciente, nome_medico, horario_desejado)
+                nome_paciente = paciente.get_nome()
+                for medico in self.lista_medicos:
+                    if medico.get_nome() == nome_medico and medico.get_especializacao() == especializacao:
+                        if horario_desejado in medico.get_horarios():
+                            medico.remover_horario(horario_desejado)
+                            consulta = Consulta(len(self.lista_consultas) + 1, nome_paciente, nome_medico, horario_desejado)
                             self.lista_consultas.append(consulta)
+                            self.salvar_dados()
                             return True
         return False
 
     def verificar_consulta(self, nome_paciente):
-        consultas_paciente = [consulta for consulta in self.lista_consultas if consulta.paciente.get_nome() == nome_paciente]
+        consultas_paciente = [consulta for consulta in self.lista_consultas if consulta.paciente == nome_paciente]
         if consultas_paciente:
             return [{"nome_medico": consulta.medico, "horario": consulta.horario} for consulta in consultas_paciente]
         return None
 
     def editar_consulta_interface(self, nome_paciente, nome_medico, novo_horario):
         for consulta in self.lista_consultas:
-            if consulta.paciente.get_nome() == nome_paciente and consulta.medico == nome_medico:
-                for medico in self.especializacoes_medicas.values():
-                    for m in medico:
-                        if m['nome'] == nome_medico:
-                            m['horarios'].append(consulta.horario)
-                            break
-                consulta.horario = novo_horario
-                for medico in self.especializacoes_medicas.values():
-                    for m in medico:
-                        if m['nome'] == nome_medico:
-                            if novo_horario in m['horarios']:
-                                m['horarios'].remove(novo_horario)
-                                return True
+            if consulta.paciente == nome_paciente and consulta.medico == nome_medico:
+                for medico in self.lista_medicos:
+                    if medico.get_nome() == nome_medico:
+                        medico.adicionar_horario(consulta.horario)
+                        medico.remover_horario(novo_horario)
+                        consulta.horario = novo_horario
+                        self.salvar_dados()
+                        return True
         return False
 
     def remover_consulta_interface(self, nome_paciente):
-        consultas_remover = [consulta for consulta in self.lista_consultas if consulta.paciente.get_nome() == nome_paciente]
-        if consultas_remover:
-            consulta_remover = consultas_remover[0]
-            self.lista_consultas.remove(consulta_remover)
-            for medico in self.especializacoes_medicas.values():
-                for m in medico:
-                    if m['nome'] == consulta_remover.medico:
-                        m['horarios'].append(consulta_remover.horario)
-                        return True
+        for consulta in self.lista_consultas:
+            if consulta.paciente == nome_paciente:
+                for medico in self.lista_medicos:
+                    if medico.get_nome() == consulta.medico:
+                        medico.adicionar_horario(consulta.horario)
+                        break
+                self.lista_consultas.remove(consulta)
+                self.salvar_dados()
+                return True
         return False
     

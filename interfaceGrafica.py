@@ -319,6 +319,16 @@ class App():
         if resultado:
             messagebox.showinfo("Sucesso", "Consulta agendada com sucesso!")
             self.criar_tela_menu()
+            try:
+                with open('dados_consultas.json', 'r') as file:
+                    dados = json.load(file)
+                
+            except FileNotFoundError:
+                dados = {'medicos': []}
+                dados['consulta'].append(consulta.descricao)
+                with open('dados_medicos.json', 'w') as file:
+                    json.dump(dados, file, indent=4,)
+                self.criar_tela_menu()
         else:
             messagebox.showerror("Erro", "Não foi possível agendar a consulta. Verifique os dados e tente novamente.")
 
@@ -339,7 +349,6 @@ class App():
             for consulta in consultas:
                 tk.Label(self.master, text=f"Médico: {consulta['nome_medico']}, Horário: {consulta['horario']}").pack()
             tk.Button(self.master, text="Voltar", command=self.verificar_consultas).pack(pady=20)
-            self.criar_tela_menu()
         else:
             messagebox.showinfo("Nenhuma Consulta", f"Nenhuma consulta agendada para {nome_paciente}")
 
